@@ -206,6 +206,7 @@ public class ProjectsTest extends BaseTest{
 		Projeto newProject = hlpProject.gerarProject(usuarioValido.id);
 		newProject.id = projectValid.id;
 		newProject.tasks.get(0).id = projectValid.tasks.get(0).id;
+		projectValid = newProject;
 		
 	given()
 		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
@@ -226,5 +227,72 @@ public class ProjectsTest extends BaseTest{
 			.body("project[0]", not(emptyString()))
 			.body("createdAt[0]", not(emptyString()));
 	}
+	
+	@Test
+	public void ct11_atualizarProjetoSemAutenticacao() {
+		Projeto newProject = hlpProject.gerarProject(usuarioValido.id);
+		newProject.id = projectValid.id;
+		newProject.tasks.get(0).id = projectValid.tasks.get(0).id;
+		
+	given()
+		.headers("Authorization", "")
+		.body(hlpProject.gerarBody(newProject).toString())
+	.when()
+		.put("projects/".concat(newProject.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("No token provided"));
+	}
+	
+	@Test
+	public void ct12_atualizarProjetoSemId() {
+		Projeto newProject = hlpProject.gerarProject(usuarioValido.id);
+		
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
+		.body(hlpProject.gerarBody(newProject).toString())
+	.when()
+		.put("projects")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_NOT_FOUND);
+	}
+	
+	@Test
+	public void ct13_deletarProjeto() {
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
+	.when()
+		.delete("projects/".concat(projectValid.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_OK);
+	}
+	
+	@Test
+	public void ct14_deletarProjetoSemAutenticacao() {
+	given()
+		.headers("Authorization", "")
+	.when()
+		.delete("projects/".concat(projectValid.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("No token provided"));
+	}
+	
+	@Test
+	public void ct15_deletarProjetoSemId() {
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
+	.when()
+		.delete("projects")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_NOT_FOUND);
+	}
+	
+	
 
 }

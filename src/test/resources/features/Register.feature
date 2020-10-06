@@ -1,7 +1,7 @@
 @Register
 Feature: Realizar registro
 
-  Background: Usuario autenticando através da api
+  Background: Registrar usuario através da api
     Given Desejo utilizar os servicos disponíves através do endereço "http://54.207.100.192"
     Then Devo utilizar como basePath o "auth" e como path o "register"
 
