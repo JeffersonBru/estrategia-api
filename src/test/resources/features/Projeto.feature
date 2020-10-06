@@ -6,7 +6,7 @@ Feature: Cadastro de Projeto
     Then Devo utilizar como path o "projects"
 
   Scenario Outline: Realizar validacao do "<validacao>"
-  	When Coleto informacoes de usuario para cadastro
+  	When Coleto informacoes de projeto para cadastro
     And Eu realizo um  "<tipoOperacao>" para realizar cadastro
     Then Valido a resposta e mensagem quando tiver "<mensagem>"
     And  Valido o status da requisicao "<statusCode>"
