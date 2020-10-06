@@ -29,7 +29,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct01_CadastroVazio() {
-		given()
+	given()
 		.body(hlp.gerarBody(new Usuario(null, null, null)).toString())
 		.basePath(basePath)
 	.when()
@@ -45,7 +45,7 @@ public class RegisterTest extends BaseTest{
 		Usuario usuario = hlp.gerarUsuarioRandom();
 		usuario.email = null;
 		usuario.senha = null;
-		given()
+	given()
 		.body(hlp.gerarBody(usuario).toString())
 		.basePath(basePath)
 	.when()
@@ -60,7 +60,7 @@ public class RegisterTest extends BaseTest{
 	public void ct03_CadastroSemSenha() {
 		Usuario usuario = hlp.gerarUsuarioRandom();
 		usuario.senha = null;
-		given()
+	given()
 		.body(hlp.gerarBody(usuario).toString())
 		.basePath(basePath)
 	.when()

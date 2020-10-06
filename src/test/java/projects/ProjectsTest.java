@@ -119,10 +119,11 @@ public class ProjectsTest extends BaseTest{
 		.body("project.user.email", is(usuarioValido.email))
 		.body("project.user.createdAt", not(emptyString()))
 		.body("project.createdAt", not(emptyString()))
-		.body("project.tasks[0].name", is(projectValid.tasks.get(0).name))
-		.body("project.tasks[0].assignedTo", is(projectValid.tasks.get(0).assignedTo))
-		.body("project.tasks[0].project", not(emptyString()))
-		.body("project.tasks[0].createdAt", not(emptyString()));
+		.rootPath("project.tasks.findAll { it.assignedTo == '%s'}", withArgs(projectValid.tasks.get(0).assignedTo))
+			.body("name[0]", is(projectValid.tasks.get(0).name))
+			.body("assignedTo[0]", is(projectValid.tasks.get(0).assignedTo))
+			.body("project[0]", not(emptyString()))
+			.body("createdAt[0]", not(emptyString()));
 	}
 	
 	@Test
@@ -219,10 +220,11 @@ public class ProjectsTest extends BaseTest{
 		.body("project.description", is(newProject.description))
 		.body("project.user", is(usuarioValido.id))
 		.body("project.createdAt", not(emptyString()))
-		.body("project.tasks[0].name", is(newProject.tasks.get(0).name))
-		.body("project.tasks[0].assignedTo", is(newProject.tasks.get(0).assignedTo))
-		.body("project.tasks[0].project", not(emptyString()))
-		.body("project.tasks[0].createdAt", not(emptyString()));
+		.rootPath("project.tasks.findAll { it.assignedTo == '%s'}", withArgs(newProject.tasks.get(0).assignedTo))
+			.body("name[0]", is(newProject.tasks.get(0).name))
+			.body("assignedTo[0]", is(newProject.tasks.get(0).assignedTo))
+			.body("project[0]", not(emptyString()))
+			.body("createdAt[0]", not(emptyString()));
 	}
 
 }
