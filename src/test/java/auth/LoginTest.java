@@ -46,6 +46,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_OK)
 		.body("user._id", not(emptyString()))
@@ -62,6 +63,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_BAD_REQUEST)
 		.body("error", is(equalTo("User not found")));
@@ -75,6 +77,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_BAD_REQUEST)
 		.body("error", is(equalTo("User not found")));
@@ -88,6 +91,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_BAD_REQUEST)
 		.body("error", is(equalTo("User not found")));
@@ -101,6 +105,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_BAD_REQUEST)
 		.body("error", is(equalTo("User not found")));
@@ -114,6 +119,7 @@ public class LoginTest extends BaseTest{
 		.basePath(basePath)
 	.when()
 		.post("authenticate")
+		.prettyPeek()
 	.then()
 		.statusCode(HttpStatus.SC_BAD_REQUEST)
 		.body("error", is(equalTo("Invalid password")));
