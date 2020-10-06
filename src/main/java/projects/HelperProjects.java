@@ -13,15 +13,15 @@ import suporte.Suporte;
 
 public class HelperProjects extends Suporte {
 	
-	public Projeto gerarProject(String id) {
+	public Projeto gerarProject(String idUsuario) {
 		String nameProject = "Project_".concat(obterData("ddMMyyyyHHmmssSSS"));
-		return new Projeto(nameProject, new GeradorDeTexto().textoAleatorio(), gerarTask(id));
+		return new Projeto(nameProject, new GeradorDeTexto().textoAleatorio(), gerarTask(idUsuario));
 	}
 	
-	public List<Tasks> gerarTask(String id) {
+	public List<Tasks> gerarTask(String idUsuario) {
 		String nameTask = "Task_".concat(obterData("ddMMyyyyHHmmssSSS"));
 		List<Tasks> tasks = new ArrayList<Tasks>();
-		tasks.add(new Tasks(nameTask, id));
+		tasks.add(new Tasks(nameTask, idUsuario));
 		return tasks;
 	}
 

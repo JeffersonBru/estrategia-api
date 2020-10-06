@@ -6,7 +6,7 @@ import suporte.Suporte;
 
 public class HelperLogin extends Suporte {
 	
-	public Usuario gerarEmpregadoRandom() {
+	public Usuario gerarUsuarioRandom() {
 		String nomeUsuario = "usuario_".concat(obterData("ddMMyyyyHHmmssSSS"));
 		return new Usuario(nomeUsuario, nomeUsuario.concat("@teste.com"), "123456");
 	}
@@ -21,7 +21,7 @@ public class HelperLogin extends Suporte {
 	}
 
 	public JSONObject gerarUsuarioRandomBody() {
-		return gerarBody(gerarEmpregadoRandom());
+		return gerarBody(gerarUsuarioRandom());
 	}
 
 }

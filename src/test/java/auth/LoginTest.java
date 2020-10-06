@@ -27,7 +27,7 @@ public class LoginTest extends BaseTest{
 	@BeforeClass
 	public static void init() {
 		hlp = new HelperLogin();
-		usuarioValido = hlp.gerarEmpregadoRandom();
+		usuarioValido = hlp.gerarUsuarioRandom();
 		
 	given()
 		.body(hlp.gerarBody(usuarioValido).toString())

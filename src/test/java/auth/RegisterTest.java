@@ -42,7 +42,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct02_CadastroComApenasNome() {
-		Usuario usuario = hlp.gerarEmpregadoRandom();
+		Usuario usuario = hlp.gerarUsuarioRandom();
 		usuario.email = null;
 		usuario.senha = null;
 		given()
@@ -58,7 +58,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct03_CadastroSemSenha() {
-		Usuario usuario = hlp.gerarEmpregadoRandom();
+		Usuario usuario = hlp.gerarUsuarioRandom();
 		usuario.senha = null;
 		given()
 		.body(hlp.gerarBody(usuario).toString())
@@ -73,7 +73,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct04_CadastroSemNome() {
-		Usuario usuario = hlp.gerarEmpregadoRandom();
+		Usuario usuario = hlp.gerarUsuarioRandom();
 		usuario.name = null;
 		given()
 		.body(hlp.gerarBody(usuario).toString())
@@ -91,7 +91,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct05_CadastroComSucesso() {
-		Usuario usuario = hlp.gerarEmpregadoRandom();
+		Usuario usuario = hlp.gerarUsuarioRandom();
 		given()
 		.body(hlp.gerarBody(usuario).toString())
 		.basePath(basePath)

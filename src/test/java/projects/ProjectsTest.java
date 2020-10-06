@@ -32,7 +32,7 @@ public class ProjectsTest extends BaseTest{
 	public static void init() {
 		hlpLogin = new HelperLogin();
 		hlpProject = new HelperProjects();
-		usuarioValido = hlpLogin.gerarEmpregadoRandom();
+		usuarioValido = hlpLogin.gerarUsuarioRandom();
 		
 		ExtractableResponse<Response> response = 
 	given()
@@ -53,7 +53,7 @@ public class ProjectsTest extends BaseTest{
 	@Test
 	public void ct01_criarProjetoSemAutenticacao() {
 	given()
-		.body(hlpProject.gerarBody(projectValid).toString())
+		.headers("Authorization", "")
 	.when()
 		.post("projects")
 		.prettyPeek()
@@ -64,7 +64,7 @@ public class ProjectsTest extends BaseTest{
 	
 	@Test
 	public void ct02_criarProjetoSucesso() {
-		projectValid.id = 
+		ExtractableResponse<Response> response = 
 	given()
 		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
 		.body(hlpProject.gerarBody(projectValid).toString())
@@ -82,12 +82,28 @@ public class ProjectsTest extends BaseTest{
 		.body("project.tasks[0].assignedTo", is(projectValid.tasks.get(0).assignedTo))
 		.body("project.tasks[0].project", not(emptyString()))
 		.body("project.tasks[0].createdAt", not(emptyString()))
-		.extract().response().path("project._id").toString();
+		.extract();
+		
+		projectValid.id = response.path("project._id");
+		projectValid.tasks.get(0).id = response.path("project.tasks[0].id");
+	}
+	
+	@Test
+	public void ct03_criarProjetoTokenInvalido() {
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token).concat("1"))
+		.body(hlpProject.gerarBody(projectValid).toString())
+	.when()
+		.post("projects")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("Token invalid"));
 	}
 	
 	
 	@Test
-	public void ct03_consultarProjeto() {
+	public void ct04_consultarProjeto() {
 	given()
 		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
 	.when()
@@ -109,9 +125,33 @@ public class ProjectsTest extends BaseTest{
 		.body("project.tasks[0].createdAt", not(emptyString()));
 	}
 	
+	@Test
+	public void ct05_consultarProjetoSemAutenticacao() {
+	given()
+		.headers("Authorization", "")
+	.when()
+		.get("projects/".concat(projectValid.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("No token provided"));
+	}
 	
 	@Test
-	public void ct04_consultarTodosOsProjetos() {
+	public void ct06_consultarProjetoTokenInvalido() {
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token).concat("1"))
+	.when()
+		.get("projects/".concat(projectValid.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("Token invalid"));
+	}
+	
+	
+	@Test
+	public void ct07_consultarTodosOsProjetos() {
 	given()
 		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
 	.when()
@@ -132,8 +172,57 @@ public class ProjectsTest extends BaseTest{
 			.body("completed[0][0]", is(false))
 			.body("name[0][0]", is(projectValid.tasks.get(0).name))
 			.body("assignedTo[0][0]", is(projectValid.tasks.get(0).assignedTo))
-			.body("project[0][0]", is(projectValid.id))
+			.body("project[0][0]", is(projectValid.id))	
 			.body("createdAt[0][0]", not(emptyString()));
+	}
+	
+	@Test
+	public void ct08_consultarTodosProjetosSemAutenticacao() {
+	given()
+		.headers("Authorization", "")
+	.when()
+		.get("projects")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("No token provided"));
+	}
+	
+	@Test
+	public void ct09_consultarTodosProjetosTokenInvalido() {
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token).concat("1"))
+	.when()
+		.get("projects")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_UNAUTHORIZED)
+		.body("error", is("Token invalid"));
+	}
+	
+	@Test
+	public void ct10_atualizarProjeto() {
+		Projeto newProject = hlpProject.gerarProject(usuarioValido.id);
+		newProject.id = projectValid.id;
+		newProject.tasks.get(0).id = projectValid.tasks.get(0).id;
+		
+	given()
+		.headers("Authorization", "Bearer ".concat(usuarioValido.token))
+		.body(hlpProject.gerarBody(newProject).toString())
+	.when()
+		.put("projects/".concat(newProject.id))
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_OK)
+		.body("project._id", not(emptyString()))
+		.body("project.title", is(newProject.title))
+		.body("project.description", is(newProject.description))
+		.body("project.user", is(usuarioValido.id))
+		.body("project.createdAt", not(emptyString()))
+		.body("project.tasks[0].name", is(newProject.tasks.get(0).name))
+		.body("project.tasks[0].assignedTo", is(newProject.tasks.get(0).assignedTo))
+		.body("project.tasks[0].project", not(emptyString()))
+		.body("project.tasks[0].createdAt", not(emptyString()));
 	}
 
 }
