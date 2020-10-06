@@ -15,3 +15,7 @@
  - Rest-Assured 4.0.0 
  - gson 2.8.5
  - json 20190722
+
+### 🐛 Bugs
+
+https://github.com/JeffersonBru/estrategia-api/issues
