@@ -17,3 +17,4 @@ Feature: Realizar registro
     | post         | cadastro sem senha         |    400     | Registration failed |
     | post         | cadastro sem nome          |    400     | Registration failed |
     | post         | cadastro com sucesso       |    200     | N/A                 |
+    | post         | usuario ja cadastrado      |    400     | User Already Exists |

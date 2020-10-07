@@ -21,6 +21,7 @@ public class RegisterTest extends BaseTest{
 	static HelperLogin hlp;
 	static String application;
 	String basePath = "auth";
+	static Usuario usuario;
 	
 	@BeforeClass
 	public static void init() {
@@ -91,7 +92,7 @@ public class RegisterTest extends BaseTest{
 	
 	@Test
 	public void ct05_CadastroComSucesso() {
-		Usuario usuario = hlp.gerarUsuarioRandom();
+		usuario = hlp.gerarUsuarioRandom();
 		given()
 		.body(hlp.gerarBody(usuario).toString())
 		.basePath(basePath)
@@ -105,6 +106,19 @@ public class RegisterTest extends BaseTest{
 		.body("user.email", is(equalTo(usuario.email)))
 		.body("user.createdAt", not(emptyString()))
 		.body("token", not(emptyString()));
+	}
+	
+	@Test
+	public void ct06_jaCadastrado() {
+		given()
+		.body(hlp.gerarBody(usuario).toString())
+		.basePath(basePath)
+	.when()
+		.post("register")
+		.prettyPeek()
+	.then()
+		.statusCode(HttpStatus.SC_BAD_REQUEST)
+		.body("error", is(equalTo("User Already Exists")));
 	}
 
 }
