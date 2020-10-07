@@ -19,3 +19,7 @@
 ### 🐛 Bugs
 
 https://github.com/JeffersonBru/estrategia-api/issues
+
+### 📖 Features
+
+https://github.com/JeffersonBru/estrategia-api/tree/main/src/test/resources/features
